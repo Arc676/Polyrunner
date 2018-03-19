@@ -13,13 +13,28 @@ public class Environment : MonoBehaviour {
 
 	[SerializeField] private Selector selector;
 
+	private bool gameOver = false;
 	private static bool paused = false;
 
 	void Start() {
 		players [0].setEnv (this);
 	}
 
+	void resetGame() {
+		gameOver = false;
+		paused = false;
+		Time.timeScale = 1;
+	}
+
 	void Update () {
+		if (Input.GetKeyDown (KeyCode.Escape)) {
+			if (gameOver) {
+				resetGame ();
+			} else {
+				paused = !paused;
+				Time.timeScale = paused ? 0 : 1;
+			}
+		}
 		if (paused) {
 			return;
 		}
@@ -55,6 +70,7 @@ public class Environment : MonoBehaviour {
 	}
 
 	public void playerDied() {
+		gameOver = true;
 		paused = true;
 	}
 
