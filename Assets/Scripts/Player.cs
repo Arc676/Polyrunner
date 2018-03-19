@@ -12,7 +12,7 @@ public class Player : MonoBehaviour {
 	private const int playerLayerMask = ~(1 << 8);
 
 	void Update () {
-		if (env.isPaused ()) {
+		if (Environment.isPaused ()) {
 			return;
 		}
 		if (isControlled) {

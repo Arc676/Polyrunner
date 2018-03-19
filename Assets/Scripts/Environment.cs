@@ -13,7 +13,7 @@ public class Environment : MonoBehaviour {
 
 	[SerializeField] private Selector selector;
 
-	private bool paused = false;
+	private static bool paused = false;
 
 	void Start() {
 		players [0].setEnv (this);
@@ -63,7 +63,7 @@ public class Environment : MonoBehaviour {
 		}
 	}
 
-	public bool isPaused() {
+	public static bool isPaused() {
 		return paused;
 	}
 
