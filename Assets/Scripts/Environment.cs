@@ -30,15 +30,27 @@ public class Environment : MonoBehaviour {
 			p.setEnv (this);
 			players.Add (p);
 		}
+		if (Input.GetKeyDown (KeyCode.Tab)) {
+			selectNextPlayer ();
+		}
+		if (Input.GetKeyDown (KeyCode.Space) && players.Count > 1) {
+			players [selectedPlayer].detach ();
+			players.RemoveAt (selectedPlayer);
+			selectNextPlayer ();
+		}
+	}
+
+	void selectNextPlayer() {
+		selectedPlayer++;
+		selectedPlayer %= players.Count;
 	}
 
 	void LateUpdate() {
 		selector.transform.position = players [selectedPlayer].transform.position;
 	}
 
-	public void playerDespawned(Player p) {
+	public void untrackPlayer(Player p) {
 		players.Remove (p);
-		Destroy (p.gameObject);
 	}
 
 }

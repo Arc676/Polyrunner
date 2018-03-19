@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour {
+
+	[SerializeField] private Rigidbody2D rb;
 	
 	private bool isControlled = true;
-
 	private Environment env;
 
 	private const int playerLayerMask = ~(1 << 8);
@@ -39,12 +40,14 @@ public class Player : MonoBehaviour {
 		}
 		if (isControlled) {
 		} else {
-			env.playerDespawned (this);
+			env.untrackPlayer (this);
+			Destroy (gameObject);
 		}
 	}
 
 	public void detach() {
 		isControlled = false;
+		rb.gravityScale = 1f;
 	}
 
 	public void setEnv(Environment env) {
