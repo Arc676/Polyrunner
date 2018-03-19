@@ -37,7 +37,22 @@ public class Environment : MonoBehaviour {
 		players [0].setEnv (this);
 	}
 
+	void spawnPlayerAt(Vector3 pos) {
+		pos.z = 0;
+		Player player = (Player)Instantiate (playerPrefab, pos, Quaternion.identity);
+		player.setEnv (this);
+		players.Add (player);
+	}
+
 	void resetGame() {
+		foreach (Player p in players) {
+			Destroy (p.gameObject);
+		}
+		players.Clear ();
+
+		spawnPlayerAt (Vector2.zero);
+		selectedPlayer = 0;
+
 		gameOverSprite.SetActive (false);
 		gameOver = false;
 		paused = false;
@@ -57,16 +72,7 @@ public class Environment : MonoBehaviour {
 			return;
 		}
 		if (Input.GetMouseButtonDown (0)) {
-			Vector3 pos = Input.mousePosition;
-			pos = cam.ScreenToWorldPoint (pos);
-			pos.z = 0;
-			Player p = (Player)Instantiate (
-				playerPrefab,
-				pos,
-				Quaternion.identity
-			);
-			p.setEnv (this);
-			players.Add (p);
+			spawnPlayerAt (cam.ScreenToWorldPoint (Input.mousePosition));
 		}
 		if (Input.GetKeyDown (KeyCode.Tab)) {
 			selectNextPlayer ();
