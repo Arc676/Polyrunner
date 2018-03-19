@@ -383,6 +383,12 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &1040379855 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114326551877151564, guid: 264990d3a1a9e464cb4e74594cd54313,
+    type: 2}
+  m_PrefabInternal: {fileID: 1844071088}
+  m_Script: {fileID: 11500000, guid: e56049fec15a6412fb638e368421ea91, type: 3}
 --- !u!1001 &1844071088
 Prefab:
   m_ObjectHideFlags: 0
@@ -519,6 +525,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 1929365219}
-  players: []
+  players:
+  - {fileID: 1040379855}
   playerPrefab: {fileID: 114326551877151564, guid: 264990d3a1a9e464cb4e74594cd54313,
     type: 2}

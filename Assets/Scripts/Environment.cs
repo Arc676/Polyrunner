@@ -8,19 +8,29 @@ public class Environment : MonoBehaviour {
 
 	[SerializeField] private List<Player> players;
 	[SerializeField] private Player playerPrefab;
-	
-	// Update is called once per frame
+
+	void Start() {
+		players [0].setEnv (this);
+	}
+
 	void Update () {
 		if (Input.GetMouseButtonDown (0)) {
 			Vector3 pos = Input.mousePosition;
-			pos.z = 0;
 			pos = cam.ScreenToWorldPoint (pos);
-			Instantiate (
+			pos.z = 0;
+			Player p = (Player)Instantiate (
 				playerPrefab,
 				pos,
 				Quaternion.identity
 			);
+			p.setEnv (this);
+			players.Add (p);
 		}
+	}
+
+	public void playerDespawned(Player p) {
+		players.Remove (p);
+		Destroy (p.gameObject);
 	}
 
 }

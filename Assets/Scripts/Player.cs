@@ -6,6 +6,8 @@ public class Player : MonoBehaviour {
 	
 	private bool isControlled = true;
 
+	private Environment env;
+
 	private const int playerLayerMask = ~(1 << 8);
 
 	void Update () {
@@ -32,14 +34,21 @@ public class Player : MonoBehaviour {
 	}
 
 	void OnCollisionEnter2D(Collision2D collision) {
+		if (collision.gameObject.CompareTag ("Player")) {
+			return;
+		}
 		if (isControlled) {
 		} else {
-			Destroy (gameObject);
+			env.playerDespawned (this);
 		}
 	}
 
 	public void detach() {
 		isControlled = false;
+	}
+
+	public void setEnv(Environment env) {
+		this.env = env;
 	}
 
 }
