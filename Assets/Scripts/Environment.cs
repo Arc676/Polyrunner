@@ -21,6 +21,7 @@ using UnityEngine;
 public class Environment : MonoBehaviour {
 
 	[SerializeField] private Camera cam;
+	[SerializeField] private GameObject gameOverSprite;
 
 	[SerializeField] private List<Player> players;
 	private int selectedPlayer = 0;
@@ -37,6 +38,7 @@ public class Environment : MonoBehaviour {
 	}
 
 	void resetGame() {
+		gameOverSprite.SetActive (false);
 		gameOver = false;
 		paused = false;
 		Time.timeScale = 1;
@@ -86,6 +88,7 @@ public class Environment : MonoBehaviour {
 	}
 
 	public void playerDied() {
+		gameOverSprite.SetActive (true);
 		gameOver = true;
 		paused = true;
 	}
