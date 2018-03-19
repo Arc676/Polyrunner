@@ -58,7 +58,9 @@ public class Player : MonoBehaviour {
 			return;
 		}
 		if (isControlled) {
-			env.playerDied ();
+			if (!collision.gameObject.CompareTag ("MapBounds")) {
+				env.playerDied ();
+			}
 		} else {
 			Destroy (gameObject);
 		}
