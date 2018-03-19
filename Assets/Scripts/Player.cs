@@ -3,23 +3,34 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour {
+	
+	private bool isControlled = true;
 
-	private List<Player> clones = new List<Player>();
-
-	// Use this for initialization
-	void Start () {
-		
-	}
-
-	// Update is called once per frame
 	void Update () {
-		Vector2 pos = transform.position;
-		float dy = Input.GetAxis ("Vertical");
-		if (dy > 0) {
-			pos.y += 0.1f;
-		} else if (dy < 0) {
-			pos.y -= 0.1f;
+		if (isControlled) {
+			Vector2 pos = transform.position;
+			float dy = Input.GetAxis ("Vertical");
+			if (dy != 0) {
+				int sgn = (int)Mathf.Sign (dy);
+				dy = sgn * 0.1f;
+				RaycastHit2D hit = Physics2D.Raycast (pos, sgn * Vector2.up, 0.2f, ~(1 << 8));
+				if (hit.collider == null) {
+					pos.y += dy;
+					transform.position = pos;
+				}
+			}
 		}
-		transform.position = pos;
 	}
+
+	void OnCollisionEnter2D(Collision2D collision) {
+		if (isControlled) {
+		} else {
+			Destroy (gameObject);
+		}
+	}
+
+	public void detach() {
+		isControlled = false;
+	}
+
 }
