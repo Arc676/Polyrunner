@@ -54,13 +54,8 @@ public class Environment : MonoBehaviour {
 		selector.transform.position = players [selectedPlayer].transform.position;
 	}
 
-	public void playerDied(Player p) {
-		if (players.Count > 1 && !p.isUnderControl ()) {
-			players.Remove (p);
-			selectedPlayer %= players.Count;
-		} else {
-			paused = true;
-		}
+	public void playerDied() {
+		paused = true;
 	}
 
 	public static bool isPaused() {

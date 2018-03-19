@@ -41,8 +41,11 @@ public class Player : MonoBehaviour {
 		if (collision.gameObject.CompareTag ("Player")) {
 			return;
 		}
-		env.playerDied (this);
-		Destroy (gameObject);
+		if (isControlled) {
+			env.playerDied ();
+		} else {
+			Destroy (gameObject);
+		}
 	}
 
 	public void detach() {
