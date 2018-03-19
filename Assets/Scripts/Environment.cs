@@ -13,11 +13,16 @@ public class Environment : MonoBehaviour {
 
 	[SerializeField] private Selector selector;
 
+	private bool paused = false;
+
 	void Start() {
 		players [0].setEnv (this);
 	}
 
 	void Update () {
+		if (paused) {
+			return;
+		}
 		if (Input.GetMouseButtonDown (0)) {
 			Vector3 pos = Input.mousePosition;
 			pos = cam.ScreenToWorldPoint (pos);
@@ -49,8 +54,17 @@ public class Environment : MonoBehaviour {
 		selector.transform.position = players [selectedPlayer].transform.position;
 	}
 
-	public void untrackPlayer(Player p) {
-		players.Remove (p);
+	public void playerDied(Player p) {
+		if (players.Count > 1 && !p.isUnderControl ()) {
+			players.Remove (p);
+			selectedPlayer %= players.Count;
+		} else {
+			paused = true;
+		}
+	}
+
+	public bool isPaused() {
+		return paused;
 	}
 
 }

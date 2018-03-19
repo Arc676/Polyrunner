@@ -12,6 +12,9 @@ public class Player : MonoBehaviour {
 	private const int playerLayerMask = ~(1 << 8);
 
 	void Update () {
+		if (env.isPaused ()) {
+			return;
+		}
 		if (isControlled) {
 			Vector2 pos = transform.position;
 			float dy = 0;
@@ -38,16 +41,17 @@ public class Player : MonoBehaviour {
 		if (collision.gameObject.CompareTag ("Player")) {
 			return;
 		}
-		if (isControlled) {
-		} else {
-			env.untrackPlayer (this);
-			Destroy (gameObject);
-		}
+		env.playerDied (this);
+		Destroy (gameObject);
 	}
 
 	public void detach() {
 		isControlled = false;
 		rb.gravityScale = 1f;
+	}
+
+	public bool isUnderControl() {
+		return isControlled;
 	}
 
 	public void setEnv(Environment env) {
