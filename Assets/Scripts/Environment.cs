@@ -9,6 +9,8 @@ public class Environment : MonoBehaviour {
 	[SerializeField] private List<Player> players;
 	[SerializeField] private Player playerPrefab;
 
+	[SerializeField] private Selector selector;
+
 	void Start() {
 		players [0].setEnv (this);
 	}
