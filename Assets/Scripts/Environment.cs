@@ -7,6 +7,8 @@ public class Environment : MonoBehaviour {
 	[SerializeField] private Camera cam;
 
 	[SerializeField] private List<Player> players;
+	private int selectedPlayer = 0;
+
 	[SerializeField] private Player playerPrefab;
 
 	[SerializeField] private Selector selector;
@@ -28,6 +30,10 @@ public class Environment : MonoBehaviour {
 			p.setEnv (this);
 			players.Add (p);
 		}
+	}
+
+	void LateUpdate() {
+		selector.transform.position = players [selectedPlayer].transform.position;
 	}
 
 	public void playerDespawned(Player p) {
