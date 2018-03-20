@@ -23,11 +23,13 @@ public class Environment : MonoBehaviour {
 	[SerializeField] private Camera cam;
 	[SerializeField] private GameObject gameOverSprite;
 
+	[SerializeField] private Player playerPrefab;
 	[SerializeField] private List<Player> players;
 	private int selectedPlayer = 0;
 
-	[SerializeField] private Player playerPrefab;
 	[SerializeField] private GameObject stdObstaclePrefab;
+	private List<GameObject> obstacles = new List<GameObject> ();
+	private float timeSinceObstacleSpawn = 0;
 
 	[SerializeField] private Selector selector;
 
@@ -43,6 +45,12 @@ public class Environment : MonoBehaviour {
 		Player player = (Player)Instantiate (playerPrefab, pos, Quaternion.identity);
 		player.setEnv (this);
 		players.Add (player);
+	}
+
+	void spawnObstacle() {
+		Vector3 pos = new Vector3 (9, Random.Range (-4, 4), 0);
+		GameObject o = (GameObject)Instantiate (stdObstaclePrefab, pos, Quaternion.identity);
+		obstacles.Add (o);
 	}
 
 	void resetGame() {
@@ -61,6 +69,17 @@ public class Environment : MonoBehaviour {
 	}
 
 	void Update () {
+		if (timeSinceObstacleSpawn < 5) {
+			timeSinceObstacleSpawn += Time.deltaTime;
+		} else {
+			timeSinceObstacleSpawn = 0;
+			spawnObstacle ();
+		}
+		foreach (GameObject o in obstacles) {
+			Vector2 pos = o.transform.position;
+			pos.x -= 0.1f * Time.deltaTime;
+			o.transform.position = pos;
+		}
 		if (Input.GetKeyDown (KeyCode.Escape)) {
 			if (gameOver) {
 				resetGame ();
