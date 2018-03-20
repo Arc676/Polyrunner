@@ -59,6 +59,11 @@ public class Environment : MonoBehaviour {
 		}
 		players.Clear ();
 
+		foreach (GameObject o in obstacles) {
+			Destroy (o);
+		}
+		obstacles.Clear ();
+
 		spawnPlayerAt (Vector2.zero);
 		selectedPlayer = 0;
 
@@ -69,17 +74,7 @@ public class Environment : MonoBehaviour {
 	}
 
 	void Update () {
-		if (timeSinceObstacleSpawn < 5) {
-			timeSinceObstacleSpawn += Time.deltaTime;
-		} else {
-			timeSinceObstacleSpawn = 0;
-			spawnObstacle ();
-		}
-		foreach (GameObject o in obstacles) {
-			Vector2 pos = o.transform.position;
-			pos.x -= 0.1f * Time.deltaTime;
-			o.transform.position = pos;
-		}
+		// pause control
 		if (Input.GetKeyDown (KeyCode.Escape)) {
 			if (gameOver) {
 				resetGame ();
@@ -91,6 +86,21 @@ public class Environment : MonoBehaviour {
 		if (paused) {
 			return;
 		}
+
+		// obstacle spawning and moving
+		if (timeSinceObstacleSpawn < 5) {
+			timeSinceObstacleSpawn += Time.deltaTime;
+		} else {
+			timeSinceObstacleSpawn = 0;
+			spawnObstacle ();
+		}
+		foreach (GameObject o in obstacles) {
+			Vector2 pos = o.transform.position;
+			pos.x -= Time.deltaTime * 3;
+			o.transform.position = pos;
+		}
+
+		// player spawning, selecting, and detaching
 		if (Input.GetMouseButtonDown (0)) {
 			spawnPlayerAt (cam.ScreenToWorldPoint (Input.mousePosition));
 		}
