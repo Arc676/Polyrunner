@@ -21,6 +21,7 @@ using UnityEngine;
 public class Player : MonoBehaviour {
 
 	[SerializeField] private Rigidbody2D rb;
+	private Collision2D currentCollision = null;
 	
 	private bool isControlled = true;
 	private Environment env;
@@ -54,6 +55,7 @@ public class Player : MonoBehaviour {
 	}
 
 	void OnCollisionEnter2D(Collision2D collision) {
+		currentCollision = collision;
 		if (collision.gameObject.CompareTag ("Player")) {
 			return;
 		}
@@ -66,9 +68,16 @@ public class Player : MonoBehaviour {
 		}
 	}
 
+	void OnCollisionExit2D(Collision2D collision) {
+		currentCollision = null;
+	}
+
 	public void detach() {
 		isControlled = false;
 		rb.gravityScale = 1f;
+		if (currentCollision != null) {
+			OnCollisionEnter2D (currentCollision);
+		}
 	}
 
 	public bool isUnderControl() {
