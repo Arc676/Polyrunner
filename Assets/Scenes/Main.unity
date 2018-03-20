@@ -688,4 +688,6 @@ MonoBehaviour:
   - {fileID: 1040379855}
   playerPrefab: {fileID: 114326551877151564, guid: 264990d3a1a9e464cb4e74594cd54313,
     type: 2}
+  stdObstaclePrefab: {fileID: 1876279265934630, guid: 7112647441a8d44b98ab93b8c598970a,
+    type: 2}
   selector: {fileID: 1927496155}

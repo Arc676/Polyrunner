@@ -27,6 +27,7 @@ public class Environment : MonoBehaviour {
 	private int selectedPlayer = 0;
 
 	[SerializeField] private Player playerPrefab;
+	[SerializeField] private GameObject stdObstaclePrefab;
 
 	[SerializeField] private Selector selector;
 
