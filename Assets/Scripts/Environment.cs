@@ -48,8 +48,14 @@ public class Environment : MonoBehaviour {
 	}
 
 	void spawnObstacle() {
-		Vector3 pos = new Vector3 (9, Random.Range (-4, 4), 0);
+		Vector3 scale = Vector3.one;
+		scale.x = Random.Range (1, 10);
+
+		Vector3 pos = new Vector3 (9 + scale.x / 2, Random.Range (-4, 4), 0);
 		GameObject o = (GameObject)Instantiate (stdObstaclePrefab, pos, Quaternion.identity);
+
+		o.transform.localScale = scale;
+
 		obstacles.Add (o);
 	}
 
@@ -88,16 +94,23 @@ public class Environment : MonoBehaviour {
 		}
 
 		// obstacle spawning and moving
-		if (timeSinceObstacleSpawn < 5) {
+		if (timeSinceObstacleSpawn < 2) {
 			timeSinceObstacleSpawn += Time.deltaTime;
 		} else {
 			timeSinceObstacleSpawn = 0;
 			spawnObstacle ();
 		}
-		foreach (GameObject o in obstacles) {
+		for (int i = 0; i < obstacles.Count; ) {
+			GameObject o = obstacles [i];
 			Vector2 pos = o.transform.position;
-			pos.x -= Time.deltaTime * 3;
-			o.transform.position = pos;
+			pos.x -= Time.deltaTime * 5;
+			if (pos.x < -15) {
+				Destroy (o);
+				obstacles.RemoveAt (i);
+			} else {
+				o.transform.position = pos;
+				i++;
+			}
 		}
 
 		// player spawning, selecting, and detaching
