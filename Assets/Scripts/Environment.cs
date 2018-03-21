@@ -37,6 +37,7 @@ public class Environment : MonoBehaviour {
 
 	[SerializeField] private GameObject componentPrefab;
 	private CompoundObstacle currentCompound = null;
+	private float timeSinceCompoundSpawn = 0;
 
 	[SerializeField] private Selector selector;
 
@@ -81,6 +82,8 @@ public class Environment : MonoBehaviour {
 
 		obstacles.Add (o);
 	}
+
+	void spawnCompound() {}
 
 	void resetGame () {
 		foreach (Player p in players) {
@@ -146,12 +149,26 @@ public class Environment : MonoBehaviour {
 			spawnObstacle ();
 		}
 
+		// spawn compounds
+		if (currentCompound == null) {
+			if (timeSinceCompoundSpawn < 5) {
+				timeSinceCompoundSpawn += Time.deltaTime;
+			} else {
+				timeSinceCompoundSpawn = 0;
+				spawnCompound ();
+			}
+		}
+
 		// moving game components
 		float dx = -Time.deltaTime * 5;
 		translateObjectsInList (obstacles, dx, -15);
 		translateObjectsInList (coins, dx, -10);
 		if (currentCompound != null) {
-			translateObjectsInList (currentCompound.getComponents (), dx, -10);
+			if (currentCompound.translate (dx, -10)) {
+				if (!currentCompound.componentsPassed ()) {
+					playerDied ();
+				}
+			}
 		}
 
 		// player spawning, selecting, and detaching
