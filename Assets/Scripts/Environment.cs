@@ -42,26 +42,34 @@ public class Environment : MonoBehaviour {
 	private bool gameOver = false;
 	private static bool paused = false;
 
-	void Start() {
+	void Start () {
 		players [0].setEnv (this);
 	}
 
-	void spawnPlayerAt(Vector3 pos) {
+	void spawnPlayerAt (Vector3 pos) {
 		pos.z = 0;
 		Player player = (Player)Instantiate (playerPrefab, pos, Quaternion.identity);
 		player.setEnv (this);
 		players.Add (player);
 	}
 
-	void spawnObstacle() {
+	void spawnObstacle () {
 		Vector3 scale = Vector3.one;
 		scale.x = Random.Range (1, 10);
 
-		Vector3 pos = new Vector3 (9 + scale.x / 2, Random.Range (-4, 4), 0);
+		float xpos = 9 + scale.x / 2;
+		Vector3 pos = new Vector3 (xpos, Random.Range (-4, 4), 0);
 		GameObject o = (GameObject)Instantiate (stdObstaclePrefab, pos, Quaternion.identity);
 
-		for (int i = 0; i < scale.x / 2; i++) {
-			Vector3 coinPos = new Vector3 (9 + scale.x / 2 + i, pos.y + 1, 0);
+		bool dropMode = pos.y > 0 && scale.x > 2 && Random.Range (0, 100) % 2 == 0;
+		int max = (int)(dropMode ? pos.y + 3 : scale.x / 2);
+		for (int i = 0; i < max; i++) {
+			Vector3 coinPos;
+			if (dropMode) {
+				coinPos = new Vector3 (xpos + i, pos.y - 1 - i, 0);
+			} else {
+				coinPos = new Vector3 (xpos + i, pos.y + 1, 0);
+			}
 			GameObject coin = (GameObject)Instantiate (coinPrefab, coinPos, Quaternion.identity);
 			coins.Add (coin);
 		}
@@ -71,7 +79,7 @@ public class Environment : MonoBehaviour {
 		obstacles.Add (o);
 	}
 
-	void resetGame() {
+	void resetGame () {
 		foreach (Player p in players) {
 			Destroy (p.gameObject);
 		}
@@ -98,7 +106,7 @@ public class Environment : MonoBehaviour {
 		scoreText.text = "Score: 0";
 	}
 
-	void translateObjectsInList(List<GameObject> list, float dx, float limit) {
+	void translateObjectsInList (List<GameObject> list, float dx, float limit) {
 		for (int i = 0; i < list.Count;) {
 			GameObject o = list [i];
 			Vector2 pos = o.transform.position;
@@ -152,26 +160,26 @@ public class Environment : MonoBehaviour {
 		}
 	}
 
-	void selectNextPlayer() {
+	void selectNextPlayer () {
 		selectedPlayer++;
 		selectedPlayer %= players.Count;
 	}
 
-	void LateUpdate() {
+	void LateUpdate () {
 		selector.transform.position = players [selectedPlayer].transform.position;
 	}
 
-	public void playerDied() {
+	public void playerDied () {
 		gameOverSprite.SetActive (true);
 		gameOver = true;
 		paused = true;
 	}
 
-	public static bool isPaused() {
+	public static bool isPaused () {
 		return paused;
 	}
 
-	public void changeScore(int delta, GameObject coin) {
+	public void changeScore (int delta, GameObject coin) {
 		score += delta;
 		scoreText.text = "Score: " + score;
 		coins.Remove (coin);
