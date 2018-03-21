@@ -17,6 +17,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Environment : MonoBehaviour {
 
@@ -36,6 +37,7 @@ public class Environment : MonoBehaviour {
 
 	[SerializeField] private Selector selector;
 
+	[SerializeField] private Text scoreText;
 	private int score = 0;
 	private bool gameOver = false;
 	private static bool paused = false;
@@ -93,6 +95,7 @@ public class Environment : MonoBehaviour {
 		paused = false;
 		Time.timeScale = 1;
 		score = 0;
+		scoreText.text = "Score: 0";
 	}
 
 	void translateObjectsInList(List<GameObject> list, float dx, float limit) {
@@ -170,6 +173,7 @@ public class Environment : MonoBehaviour {
 
 	public void changeScore(int delta, GameObject coin) {
 		score += delta;
+		scoreText.text = "Score: " + score;
 		coins.Remove (coin);
 		Destroy (coin);
 	}
