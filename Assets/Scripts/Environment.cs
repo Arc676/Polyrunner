@@ -168,4 +168,10 @@ public class Environment : MonoBehaviour {
 		return paused;
 	}
 
+	public void changeScore(int delta, GameObject coin) {
+		score += delta;
+		coins.Remove (coin);
+		Destroy (coin);
+	}
+
 }

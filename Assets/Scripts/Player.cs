@@ -56,15 +56,19 @@ public class Player : MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D collision) {
 		currentCollision = collision;
-		if (collision.gameObject.CompareTag ("Player")) {
-			return;
-		}
 		if (isControlled) {
 			if (!collision.gameObject.CompareTag ("MapBounds")) {
 				env.playerDied ();
 			}
 		} else {
 			Destroy (gameObject);
+		}
+	}
+
+	void OnTriggerEnter2D(Collider2D collider) {
+		if (collider.gameObject.CompareTag ("Coin")) {
+			env.changeScore (isControlled ? 5 : 10, collider.gameObject);
+			return;
 		}
 	}
 
