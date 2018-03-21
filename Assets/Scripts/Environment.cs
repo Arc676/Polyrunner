@@ -31,6 +31,8 @@ public class Environment : MonoBehaviour {
 	private List<GameObject> obstacles = new List<GameObject> ();
 	private float timeSinceObstacleSpawn = 0;
 
+	[SerializeField] private GameObject coinPrefab;
+
 	[SerializeField] private Selector selector;
 
 	private bool gameOver = false;
