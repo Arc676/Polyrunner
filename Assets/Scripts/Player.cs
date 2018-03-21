@@ -69,6 +69,9 @@ public class Player : MonoBehaviour {
 		if (collider.gameObject.CompareTag ("Coin")) {
 			env.changeScore (isControlled ? 5 : 10, collider.gameObject);
 			return;
+		} else if (collider.gameObject.CompareTag ("Component")) {
+			ComponentObstacle c = collider.gameObject.GetComponent<ComponentObstacle> ();
+			c.pass ();
 		}
 	}
 

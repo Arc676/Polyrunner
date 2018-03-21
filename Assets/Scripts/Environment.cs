@@ -35,6 +35,9 @@ public class Environment : MonoBehaviour {
 	[SerializeField] private GameObject coinPrefab;
 	private List<GameObject> coins = new List<GameObject> ();
 
+	[SerializeField] private GameObject componentPrefab;
+	private CompoundObstacle currentCompound = null;
+
 	[SerializeField] private Selector selector;
 
 	[SerializeField] private Text scoreText;
@@ -135,16 +138,21 @@ public class Environment : MonoBehaviour {
 			return;
 		}
 
-		// obstacle spawning and moving
+		// obstacle spawning
 		if (timeSinceObstacleSpawn < 2) {
 			timeSinceObstacleSpawn += Time.deltaTime;
 		} else {
 			timeSinceObstacleSpawn = 0;
 			spawnObstacle ();
 		}
+
+		// moving game components
 		float dx = -Time.deltaTime * 5;
 		translateObjectsInList (obstacles, dx, -15);
-		translateObjectsInList (coins, dx, -15);
+		translateObjectsInList (coins, dx, -10);
+		if (currentCompound != null) {
+			translateObjectsInList (currentCompound.getComponents (), dx, -10);
+		}
 
 		// player spawning, selecting, and detaching
 		if (Input.GetMouseButtonDown (0)) {
