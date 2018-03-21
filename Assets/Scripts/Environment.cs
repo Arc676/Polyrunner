@@ -32,9 +32,11 @@ public class Environment : MonoBehaviour {
 	private float timeSinceObstacleSpawn = 0;
 
 	[SerializeField] private GameObject coinPrefab;
+	private List<GameObject> coins = new List<GameObject> ();
 
 	[SerializeField] private Selector selector;
 
+	private int score = 0;
 	private bool gameOver = false;
 	private static bool paused = false;
 
@@ -56,6 +58,12 @@ public class Environment : MonoBehaviour {
 		Vector3 pos = new Vector3 (9 + scale.x / 2, Random.Range (-4, 4), 0);
 		GameObject o = (GameObject)Instantiate (stdObstaclePrefab, pos, Quaternion.identity);
 
+		for (int i = 0; i < scale.x / 2; i++) {
+			Vector3 coinPos = new Vector3 (9 + scale.x / 2 + i, pos.y + 1, 0);
+			GameObject coin = (GameObject)Instantiate (coinPrefab, coinPos, Quaternion.identity);
+			coins.Add (coin);
+		}
+
 		o.transform.localScale = scale;
 
 		obstacles.Add (o);
@@ -72,6 +80,11 @@ public class Environment : MonoBehaviour {
 		}
 		obstacles.Clear ();
 
+		foreach (GameObject o in coins) {
+			Destroy (o);
+		}
+		coins.Clear ();
+
 		spawnPlayerAt (Vector2.zero);
 		selectedPlayer = 0;
 
@@ -79,6 +92,22 @@ public class Environment : MonoBehaviour {
 		gameOver = false;
 		paused = false;
 		Time.timeScale = 1;
+		score = 0;
+	}
+
+	void translateObjectsInList(List<GameObject> list, float dx, float limit) {
+		for (int i = 0; i < list.Count;) {
+			GameObject o = list [i];
+			Vector2 pos = o.transform.position;
+			pos.x += dx;
+			if (pos.x < limit) {
+				Destroy (o);
+				list.RemoveAt (i);
+			} else {
+				o.transform.position = pos;
+				i++;
+			}
+		}
 	}
 
 	void Update () {
@@ -102,18 +131,9 @@ public class Environment : MonoBehaviour {
 			timeSinceObstacleSpawn = 0;
 			spawnObstacle ();
 		}
-		for (int i = 0; i < obstacles.Count; ) {
-			GameObject o = obstacles [i];
-			Vector2 pos = o.transform.position;
-			pos.x -= Time.deltaTime * 5;
-			if (pos.x < -15) {
-				Destroy (o);
-				obstacles.RemoveAt (i);
-			} else {
-				o.transform.position = pos;
-				i++;
-			}
-		}
+		float dx = -Time.deltaTime * 5;
+		translateObjectsInList (obstacles, dx, -15);
+		translateObjectsInList (coins, dx, -15);
 
 		// player spawning, selecting, and detaching
 		if (Input.GetMouseButtonDown (0)) {
