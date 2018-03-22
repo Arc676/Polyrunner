@@ -37,4 +37,10 @@ public class CompoundObstacle : MonoBehaviour {
 		return false;
 	}
 
+	public void despawn() {
+		foreach (ComponentObstacle c in components) {
+			Destroy (c.gameObject);
+		}
+	}
+
 }

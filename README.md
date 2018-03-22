@@ -6,7 +6,9 @@ Made for [Weekly Game Jam, Week 36 on itch.io](https://itch.io/jam/weekly-game-j
 
 ### Mechanics
 
-You can spawn any number of copies of yourself, but they all move simulataneously and you lose the game if any of them touch an obstacle. If there are too many twins on screen for you to handle, you can "detach" some. Detached twins cannot be controlled and experience vertical gravity. However, if a detached twin collects a pellet, it's worth twice the points!
+You can spawn any number of copies of yourself, but they all move simultaneously and you lose the game if any of them touch an obstacle. If there are too many twins on screen for you to handle, you can "detach" some. Detached twins cannot be controlled and experience vertical gravity. However, if a detached twin collects a pellet, it's worth twice the points!
+
+Self cloning makes it easier to get past compound obstacles. These are multiple dots that appear red until you pass them (then they turn green). You must touch all component obstacles before any of them leave the stage or you lose the game.
 
 ### Objective
 

@@ -96,6 +96,11 @@ public class Environment : MonoBehaviour {
 		}
 		obstacles.Clear ();
 
+		if (currentCompound != null) {
+			currentCompound.despawn ();
+			currentCompound = null;
+		}
+
 		foreach (GameObject o in coins) {
 			Destroy (o);
 		}
