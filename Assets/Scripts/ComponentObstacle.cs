@@ -9,12 +9,16 @@ public class ComponentObstacle : MonoBehaviour {
 	private bool passed = false;
 
 	public void pass() {
+		GetComponent <SpriteRenderer> ().sprite = green;
 		passed = true;
 	}
 
 	public bool hasBeenPassed() {
-		GetComponent <SpriteRenderer> ().sprite = green;
 		return passed;
+	}
+
+	public void despawn() {
+		Destroy (gameObject);
 	}
 
 }

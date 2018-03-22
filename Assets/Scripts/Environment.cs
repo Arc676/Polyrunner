@@ -35,7 +35,7 @@ public class Environment : MonoBehaviour {
 	[SerializeField] private GameObject coinPrefab;
 	private List<GameObject> coins = new List<GameObject> ();
 
-	[SerializeField] private GameObject componentPrefab;
+	[SerializeField] private ComponentObstacle componentPrefab;
 	private CompoundObstacle currentCompound = null;
 	private float timeSinceCompoundSpawn = 0;
 
@@ -83,7 +83,32 @@ public class Environment : MonoBehaviour {
 		obstacles.Add (o);
 	}
 
-	void spawnCompound() {}
+	void spawnCompound() {
+		currentCompound = new CompoundObstacle ();
+		int count = Random.Range (2, 5);
+		int added = 0;
+		for (int i = 0; i < count; i++) {
+			Vector3 pos = new Vector3 (
+				9 + Random.Range (0, 6),
+				Random.Range (-4, 4),
+				0
+			);
+			Debug.Log ("Potential component obstacle at: " + pos.x);
+			bool posOK = true;
+			foreach (GameObject o in obstacles) {
+				if (o.GetComponent <Collider2D> ().bounds.Contains (pos)) {
+					posOK = false;
+					break;
+				}
+			}
+			if (posOK) {
+				ComponentObstacle c = (ComponentObstacle)Instantiate (componentPrefab, pos, Quaternion.identity);
+				currentCompound.addComponent (c);
+				added++;
+			}
+		}
+		Debug.Log ("Created " + added + " component obstacles");
+	}
 
 	void resetGame () {
 		foreach (Player p in players) {
@@ -96,10 +121,7 @@ public class Environment : MonoBehaviour {
 		}
 		obstacles.Clear ();
 
-		if (currentCompound != null) {
-			currentCompound.despawn ();
-			currentCompound = null;
-		}
+		destroyCompound ();
 
 		foreach (GameObject o in coins) {
 			Destroy (o);
@@ -115,6 +137,13 @@ public class Environment : MonoBehaviour {
 		Time.timeScale = 1;
 		score = 0;
 		scoreText.text = "Score: 0";
+	}
+
+	void destroyCompound() {
+		if (currentCompound != null) {
+			currentCompound.despawn ();
+			currentCompound = null;
+		}
 	}
 
 	void translateObjectsInList (List<GameObject> list, float dx, float limit) {
@@ -170,7 +199,9 @@ public class Environment : MonoBehaviour {
 		translateObjectsInList (coins, dx, -10);
 		if (currentCompound != null) {
 			if (currentCompound.translate (dx, -10)) {
-				if (!currentCompound.componentsPassed ()) {
+				if (currentCompound.componentsPassed ()) {
+					destroyCompound ();
+				} else {
 					playerDied ();
 				}
 			}

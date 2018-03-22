@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CompoundObstacle : MonoBehaviour {
+public class CompoundObstacle {
 
 	private List<ComponentObstacle> components = new List<ComponentObstacle> ();
 
@@ -32,14 +32,13 @@ public class CompoundObstacle : MonoBehaviour {
 				return true;
 			}
 			o.transform.position = pos;
-			i++;
 		}
 		return false;
 	}
 
 	public void despawn() {
 		foreach (ComponentObstacle c in components) {
-			Destroy (c.gameObject);
+			c.despawn ();
 		}
 	}
 

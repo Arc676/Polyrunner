@@ -921,5 +921,7 @@ MonoBehaviour:
   stdObstaclePrefab: {fileID: 1876279265934630, guid: 7112647441a8d44b98ab93b8c598970a,
     type: 2}
   coinPrefab: {fileID: 1220667998198604, guid: a3b683d0ee2a84c708b790dfd6fad770, type: 2}
+  componentPrefab: {fileID: 114400034955645860, guid: 59b6332ba41f649cb8f44a2cf7b3a21a,
+    type: 2}
   selector: {fileID: 1927496155}
   scoreText: {fileID: 152135342}
