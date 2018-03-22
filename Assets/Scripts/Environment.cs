@@ -86,14 +86,12 @@ public class Environment : MonoBehaviour {
 	void spawnCompound() {
 		currentCompound = new CompoundObstacle ();
 		int count = Random.Range (2, 5);
-		int added = 0;
 		for (int i = 0; i < count; i++) {
 			Vector3 pos = new Vector3 (
 				9 + Random.Range (0, 6),
 				Random.Range (-4, 4),
 				0
 			);
-			Debug.Log ("Potential component obstacle at: " + pos.x);
 			bool posOK = true;
 			foreach (GameObject o in obstacles) {
 				if (o.GetComponent <Collider2D> ().bounds.Contains (pos)) {
@@ -104,10 +102,8 @@ public class Environment : MonoBehaviour {
 			if (posOK) {
 				ComponentObstacle c = (ComponentObstacle)Instantiate (componentPrefab, pos, Quaternion.identity);
 				currentCompound.addComponent (c);
-				added++;
 			}
 		}
-		Debug.Log ("Created " + added + " component obstacles");
 	}
 
 	void resetGame () {
@@ -200,6 +196,7 @@ public class Environment : MonoBehaviour {
 		if (currentCompound != null) {
 			if (currentCompound.translate (dx, -10)) {
 				if (currentCompound.componentsPassed ()) {
+					changeScore (200);
 					destroyCompound ();
 				} else {
 					playerDied ();
@@ -240,9 +237,12 @@ public class Environment : MonoBehaviour {
 		return paused;
 	}
 
-	public void changeScore (int delta, GameObject coin) {
+	public void changeScore (int delta) {
 		score += delta;
 		scoreText.text = "Score: " + score;
+	}
+
+	public void destroyCoin(GameObject coin) {
 		coins.Remove (coin);
 		Destroy (coin);
 	}

@@ -67,11 +67,12 @@ public class Player : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D collider) {
 		if (collider.gameObject.CompareTag ("Coin")) {
-			env.changeScore (isControlled ? 5 : 10, collider.gameObject);
-			return;
+			env.changeScore (isControlled ? 5 : 10);
+			env.destroyCoin (collider.gameObject);
 		} else if (collider.gameObject.CompareTag ("Component")) {
 			ComponentObstacle c = collider.gameObject.GetComponent<ComponentObstacle> ();
 			c.pass ();
+			env.changeScore (isControlled ? 50 : 100);
 		}
 	}
 
