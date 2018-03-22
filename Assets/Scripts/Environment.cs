@@ -79,6 +79,15 @@ public class Environment : MonoBehaviour {
 		Vector3 pos = new Vector3 (xpos, Random.Range (-4, 4), 0);
 		GameObject o = (GameObject)Instantiate (stdObstaclePrefab, pos, Quaternion.identity);
 
+		if (currentCompound != null) {
+			foreach (ComponentObstacle c in currentCompound.getComponents ()) {
+				if (c.GetComponent <Collider2D> ().IsTouching (o.GetComponent <Collider2D> ())) {
+					Destroy (o);
+					return;
+				}
+			}
+		}
+
 		bool dropMode = pos.y > 0 && scale.x > 2 && Random.Range (0, 100) % 2 == 0;
 		int max = (int)(dropMode ? pos.y + 3 : scale.x / 2);
 		for (int i = 0; i < max; i++) {
@@ -204,7 +213,7 @@ public class Environment : MonoBehaviour {
 		}
 
 		// moving game components
-		float dx = -Time.deltaTime * 5;
+		float dx = -Time.deltaTime * 4;
 		translateObjectsInList (obstacles, dx, -15);
 		translateObjectsInList (coins, dx, -10);
 		if (currentCompound != null) {
