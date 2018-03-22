@@ -67,7 +67,7 @@ public class Environment : MonoBehaviour {
 	}
 
 	void spawnPlayerAt (Vector3 pos) {
-		pos.z = 0;
+		pos.z = -1;
 		Player player = (Player)Instantiate (playerPrefab, pos, Quaternion.identity);
 		player.setEnv (this);
 		players.Add (player);
@@ -115,7 +115,7 @@ public class Environment : MonoBehaviour {
 			Vector3 pos = new Vector3 (
 				9 + Random.Range (0, 6),
 				Random.Range (-4, 4),
-				0
+				-2
 			);
 			bool posOK = true;
 			ComponentObstacle c = (ComponentObstacle)Instantiate (componentPrefab, pos, Quaternion.identity);
