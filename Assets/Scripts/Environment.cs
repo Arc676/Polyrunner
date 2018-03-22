@@ -131,7 +131,11 @@ public class Environment : MonoBehaviour {
 				currentCompound.addComponent (c);
 			}
 		}
-		componentCountLabel.text = currentCompound.getComponentCount () + " components";
+		if (currentCompound.getComponentCount () == 0) {
+			currentCompound = null;
+		} else {
+			componentCountLabel.text = currentCompound.getComponentCount () + " components";
+		}
 	}
 
 	void resetGame () {
