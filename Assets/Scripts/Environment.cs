@@ -42,12 +42,26 @@ public class Environment : MonoBehaviour {
 	[SerializeField] private Selector selector;
 
 	[SerializeField] private Text scoreText;
+	[SerializeField] private Text hiscoreLabel;
+	private int hiScore = 0;
 	private int score = 0;
 	private bool gameOver = false;
 	private static bool paused = false;
 
 	void Start () {
+		if (PlayerPrefs.HasKey("HiScore")) {
+			updateHiScore(PlayerPrefs.GetInt("HiScore"), false);
+		}
 		players [0].setEnv (this);
+	}
+
+	void updateHiScore(int score, bool save) {
+		hiScore = score;
+		hiscoreLabel.text = "High Score: " + hiScore;
+		if (save) {
+			PlayerPrefs.SetInt("HiScore", hiScore);
+			PlayerPrefs.Save();
+		}
 	}
 
 	void spawnPlayerAt (Vector3 pos) {
@@ -228,6 +242,9 @@ public class Environment : MonoBehaviour {
 	}
 
 	public void playerDied () {
+		if (score > hiScore) {
+			updateHiScore(score, true);
+		}
 		gameOverSprite.SetActive (true);
 		gameOver = true;
 		paused = true;
