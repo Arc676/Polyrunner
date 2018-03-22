@@ -39,6 +39,9 @@ public class Environment : MonoBehaviour {
 	private CompoundObstacle currentCompound = null;
 	private float timeSinceCompoundSpawn = 0;
 
+	private ContactFilter2D contactFilter;
+	private Collider2D[] res = {null, null};
+
 	[SerializeField] private Text componentCountLabel;
 
 	[SerializeField] private Selector selector;
@@ -55,6 +58,9 @@ public class Environment : MonoBehaviour {
 			updateHiScore(PlayerPrefs.GetInt("HiScore"), false);
 		}
 		players [0].setEnv (this);
+
+		contactFilter = new ContactFilter2D ();
+		contactFilter.useTriggers = true;
 	}
 
 	void updateHiScore(int score, bool save) {
@@ -82,13 +88,10 @@ public class Environment : MonoBehaviour {
 		GameObject o = (GameObject)Instantiate (stdObstaclePrefab, pos, Quaternion.identity);
 		o.transform.localScale = scale;
 
-		Collider2D coll = o.GetComponent <Collider2D> ();
 		if (currentCompound != null) {
-			foreach (ComponentObstacle c in currentCompound.getComponents ()) {
-				if (c.GetComponent <Collider2D> ().bounds.Intersects (coll.bounds)) {
-					Destroy (o);
-					return;
-				}
+			if (o.GetComponent <Collider2D> ().OverlapCollider (contactFilter, res) > 0) {
+				Destroy (o);
+				return;
 			}
 		}
 
@@ -119,13 +122,9 @@ public class Environment : MonoBehaviour {
 			);
 			bool posOK = true;
 			ComponentObstacle c = (ComponentObstacle)Instantiate (componentPrefab, pos, Quaternion.identity);
-			Collider2D coll = c.GetComponent <Collider2D> ();
-			foreach (GameObject o in obstacles) {
-				if (o.GetComponent <Collider2D> ().bounds.Intersects (coll.bounds)) {
-					Destroy (c.gameObject);
-					posOK = false;
-					break;
-				}
+			if (c.GetComponent <Collider2D> ().OverlapCollider (contactFilter, res) > 0) {
+				Destroy (c.gameObject);
+				posOK = false;
 			}
 			if (posOK) {
 				currentCompound.addComponent (c);

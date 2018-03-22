@@ -46,7 +46,7 @@ public class CompoundObstacle {
 	public bool translate (float dx, float limit) {
 		for (int i = 0; i < components.Count; i++) {
 			GameObject o = components [i].gameObject;
-			Vector2 pos = o.transform.position;
+			Vector3 pos = o.transform.position;
 			pos.x += dx;
 			if (pos.x < limit) {
 				return true;
