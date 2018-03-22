@@ -39,6 +39,8 @@ public class Environment : MonoBehaviour {
 	private CompoundObstacle currentCompound = null;
 	private float timeSinceCompoundSpawn = 0;
 
+	[SerializeField] private Text componentCountLabel;
+
 	[SerializeField] private Selector selector;
 
 	[SerializeField] private Text scoreText;
@@ -78,10 +80,12 @@ public class Environment : MonoBehaviour {
 		float xpos = 9 + scale.x / 2;
 		Vector3 pos = new Vector3 (xpos, Random.Range (-4, 4), 0);
 		GameObject o = (GameObject)Instantiate (stdObstaclePrefab, pos, Quaternion.identity);
+		o.transform.localScale = scale;
 
+		Collider2D coll = o.GetComponent <Collider2D> ();
 		if (currentCompound != null) {
 			foreach (ComponentObstacle c in currentCompound.getComponents ()) {
-				if (c.GetComponent <Collider2D> ().IsTouching (o.GetComponent <Collider2D> ())) {
+				if (c.GetComponent <Collider2D> ().bounds.Intersects (coll.bounds)) {
 					Destroy (o);
 					return;
 				}
@@ -101,8 +105,6 @@ public class Environment : MonoBehaviour {
 			coins.Add (coin);
 		}
 
-		o.transform.localScale = scale;
-
 		obstacles.Add (o);
 	}
 
@@ -117,8 +119,9 @@ public class Environment : MonoBehaviour {
 			);
 			bool posOK = true;
 			ComponentObstacle c = (ComponentObstacle)Instantiate (componentPrefab, pos, Quaternion.identity);
+			Collider2D coll = c.GetComponent <Collider2D> ();
 			foreach (GameObject o in obstacles) {
-				if (o.GetComponent <Collider2D> ().IsTouching (c.GetComponent <Collider2D>())) {
+				if (o.GetComponent <Collider2D> ().bounds.Intersects (coll.bounds)) {
 					Destroy (c.gameObject);
 					posOK = false;
 					break;
@@ -128,6 +131,7 @@ public class Environment : MonoBehaviour {
 				currentCompound.addComponent (c);
 			}
 		}
+		componentCountLabel.text = currentCompound.getComponentCount () + " components";
 	}
 
 	void resetGame () {
@@ -163,6 +167,7 @@ public class Environment : MonoBehaviour {
 		if (currentCompound != null) {
 			currentCompound.despawn ();
 			currentCompound = null;
+			componentCountLabel.text = "No components";
 		}
 	}
 
