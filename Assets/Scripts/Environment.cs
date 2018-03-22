@@ -116,14 +116,15 @@ public class Environment : MonoBehaviour {
 				0
 			);
 			bool posOK = true;
+			ComponentObstacle c = (ComponentObstacle)Instantiate (componentPrefab, pos, Quaternion.identity);
 			foreach (GameObject o in obstacles) {
-				if (o.GetComponent <Collider2D> ().bounds.Contains (pos)) {
+				if (o.GetComponent <Collider2D> ().IsTouching (c.GetComponent <Collider2D>())) {
+					Destroy (c.gameObject);
 					posOK = false;
 					break;
 				}
 			}
 			if (posOK) {
-				ComponentObstacle c = (ComponentObstacle)Instantiate (componentPrefab, pos, Quaternion.identity);
 				currentCompound.addComponent (c);
 			}
 		}
