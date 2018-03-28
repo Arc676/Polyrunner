@@ -1,4 +1,4 @@
-# Polyrunner
+# nRunner
 
 An infinite runner, except there's (usually) no vertical gravity and the main mechanic is creating copies of yourself
 
