@@ -22,11 +22,17 @@ public class Player : MonoBehaviour {
 
 	[SerializeField] private Rigidbody2D rb;
 	private Collision2D currentCollision = null;
+
+	private AudioSource getCoin;
 	
 	private bool isControlled = true;
 	private Environment env;
 
 	private const int playerLayerMask = ~(1 << 8);
+
+	void Start() {
+		getCoin = GetComponent <AudioSource> ();
+	}
 
 	void Update () {
 		if (Environment.isPaused ()) {
@@ -67,6 +73,9 @@ public class Player : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D collider) {
 		if (collider.gameObject.CompareTag ("Coin")) {
+			if (Environment.soundEnabled) {
+				getCoin.Play ();
+			}
 			env.changeScore (isControlled ? 5 : 10);
 			env.destroyCoin (collider.gameObject);
 		} else if (collider.gameObject.CompareTag ("Component")) {

@@ -26,7 +26,7 @@ public class Environment : MonoBehaviour {
 
 	// sound
 	private AudioSource music;
-	private bool soundEnabled = true;
+	public static bool soundEnabled = true;
 
 	[SerializeField] private Player playerPrefab;
 	[SerializeField] private List<Player> players;
