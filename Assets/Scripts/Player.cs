@@ -23,16 +23,15 @@ public class Player : MonoBehaviour {
 	[SerializeField] private Rigidbody2D rb;
 	private Collision2D currentCollision = null;
 
-	private AudioSource getCoin;
+	[SerializeField] private AudioSource getCoin;
+	[SerializeField] private AudioSource[] getCompounds;
 	
 	private bool isControlled = true;
 	private Environment env;
 
-	private const int playerLayerMask = ~(1 << 8);
+	private static int componentsPassed = 0;
 
-	void Start() {
-		getCoin = GetComponent <AudioSource> ();
-	}
+	private const int playerLayerMask = ~(1 << 8);
 
 	void Update () {
 		if (Environment.isPaused ()) {
@@ -79,6 +78,10 @@ public class Player : MonoBehaviour {
 			env.changeScore (isControlled ? 5 : 10);
 			env.destroyCoin (collider.gameObject);
 		} else if (collider.gameObject.CompareTag ("Component")) {
+			if (Environment.soundEnabled) {
+				getCompounds [componentsPassed].Play ();
+			}
+			componentsPassed++;
 			ComponentObstacle c = collider.gameObject.GetComponent<ComponentObstacle> ();
 			c.pass ();
 			env.changeScore (isControlled ? 50 : 100);
@@ -103,6 +106,10 @@ public class Player : MonoBehaviour {
 
 	public void setEnv(Environment env) {
 		this.env = env;
+	}
+
+	public static void resetComponents() {
+		componentsPassed = 0;
 	}
 
 }

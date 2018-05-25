@@ -42,3 +42,4 @@ Project available under GPLv3.
 
 Theme music by [FoolBoyMedia](https://freesound.org/people/FoolBoyMedia/sounds/233985/) available under [CC BY-NC 3.0](http://creativecommons.org/licenses/by-nc/3.0/).
 Coin pickup by [TreasureSounds](https://freesound.org/people/TreasureSounds/sounds/332629/) available under [CC BY 3.0](http://creativecommons.org/licenses/by/3.0/).
+Compound obstacle pickup by Arc676/Alessandro Vinciguerra available under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).

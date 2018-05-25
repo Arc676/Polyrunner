@@ -139,7 +139,7 @@ public class Environment : MonoBehaviour {
 		if (currentCompound.getComponentCount () == 0) {
 			currentCompound = null;
 		} else {
-			componentCountLabel.text = currentCompound.getComponentCount () + " components";
+			componentCountLabel.text = currentCompound.getComponentCount () + " component(s)";
 		}
 	}
 
@@ -247,6 +247,7 @@ public class Environment : MonoBehaviour {
 				if (currentCompound.componentsPassed ()) {
 					changeScore (200);
 					destroyCompound ();
+					Player.resetComponents ();
 				} else {
 					playerDied ();
 				}
