@@ -24,6 +24,10 @@ public class Environment : MonoBehaviour {
 	[SerializeField] private Camera cam;
 	[SerializeField] private GameObject gameOverSprite;
 
+	// sound
+	private AudioSource music;
+	private bool soundEnabled = true;
+
 	[SerializeField] private Player playerPrefab;
 	[SerializeField] private List<Player> players;
 	private int selectedPlayer = 0;
@@ -61,6 +65,8 @@ public class Environment : MonoBehaviour {
 
 		contactFilter = new ContactFilter2D ();
 		contactFilter.useTriggers = true;
+
+		music = GetComponent <AudioSource> ();
 	}
 
 	void updateHiScore(int score, bool save) {
@@ -198,6 +204,17 @@ public class Environment : MonoBehaviour {
 				paused = !paused;
 				Time.timeScale = paused ? 0 : 1;
 			}
+		}
+		// toggle music
+		if (Input.GetKeyDown (KeyCode.M)) {
+			if (music.isPlaying) {
+				music.Pause ();
+			} else {
+				music.UnPause ();
+			}
+		}
+		if (Input.GetKeyDown (KeyCode.F)) {
+			soundEnabled = !soundEnabled;
 		}
 		if (paused) {
 			return;
