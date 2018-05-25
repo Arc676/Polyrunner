@@ -36,4 +36,8 @@ You earn more points if the pellet is earned by a detached twin.
 - Run into the pellets to collect them.
 - Run into the red dots (component obstacles) to turn them green.
 
+### Licensing and acknowledgements
+
 Project available under GPLv3.
+
+Theme music by [FoolBoyMedia](https://freesound.org/people/FoolBoyMedia/sounds/233985/) available under [CC BY 3.0](http://creativecommons.org/licenses/by-nc/3.0/).
