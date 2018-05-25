@@ -23,7 +23,6 @@ public class Player : MonoBehaviour {
 	[SerializeField] private Rigidbody2D rb;
 	private Collision2D currentCollision = null;
 
-	[SerializeField] private AudioSource getCoin;
 	[SerializeField] private AudioSource[] getCompounds;
 	
 	private bool isControlled = true;
@@ -66,6 +65,7 @@ public class Player : MonoBehaviour {
 				env.playerDied ();
 			}
 		} else {
+			env.playDespawnSFX ();
 			Destroy (gameObject);
 		}
 	}
@@ -73,7 +73,7 @@ public class Player : MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D collider) {
 		if (collider.gameObject.CompareTag ("Coin")) {
 			if (Environment.soundEnabled) {
-				getCoin.Play ();
+				env.playCoinSFX ();
 			}
 			env.changeScore (isControlled ? 5 : 10);
 			env.destroyCoin (collider.gameObject);

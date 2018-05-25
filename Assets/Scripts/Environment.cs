@@ -28,6 +28,10 @@ public class Environment : MonoBehaviour {
 	private AudioSource music;
 	public static bool soundEnabled = true;
 
+	[SerializeField] private AudioSource getCoin;
+	[SerializeField] private AudioSource playerSpawnSound;
+	[SerializeField] private AudioSource playerDespawnSound;
+
 	[SerializeField] private Player playerPrefab;
 	[SerializeField] private List<Player> players;
 	private int selectedPlayer = 0;
@@ -83,6 +87,9 @@ public class Environment : MonoBehaviour {
 		Player player = (Player)Instantiate (playerPrefab, pos, Quaternion.identity);
 		player.setEnv (this);
 		players.Add (player);
+		if (soundEnabled) {
+			playerSpawnSound.Play ();
+		}
 	}
 
 	void spawnObstacle () {
@@ -298,6 +305,18 @@ public class Environment : MonoBehaviour {
 	public void destroyCoin(GameObject coin) {
 		coins.Remove (coin);
 		Destroy (coin);
+	}
+
+	public void playCoinSFX() {
+		if (soundEnabled) {
+			getCoin.Play ();
+		}
+	}
+
+	public void playDespawnSFX() {
+		if (soundEnabled) {
+			playerDespawnSound.Play ();
+		}
 	}
 
 }
